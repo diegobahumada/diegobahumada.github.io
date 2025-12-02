@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diego Barrios Ahumada</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <canvas id="bg"></canvas>
+    <main>
+        <h1>DIEGO BARRIOS</h1>
+        
+        <nav class="links">
+            <a href="https://github.com/diegobahumada">GitHub</a> |
+            <a href="https://linkedin.com/in/diego-barrios-ahumada/">LinkedIn</a> |
+            <a href="mailto:diegobahumada@gmail.com">diegobahumada@gmail.com</a>
+        </nav>
+
+        <p class="bio">
+            Ingeniero en Informática con experiencia en fullstack development e implementación de machine learning en procesos empresariales. Recién titulado, dispuesto a especializarme en cualquier área que me permita crecer profesionalmente y aportar valor.
+        </p>
+
+        <section>
+            <h2>-- Proyectos --</h2>
+            
+            <div class="project">
+                <h3><a href="https://github.com/diegobahumada/yt-music-tagger">yt-music-tagger</a></h3>
+                <p>Aplicación fullstack para gestionar bibliotecas musicales locales. Frontend en React + TypeScript con gestión de estado compleja (Zustand) para operaciones masivas. Backend FastAPI con integración de APIs de metadatos (MusicBrainz, Discogs) y descarga de audio (yt-dlp).</p>
+                <code>React · TypeScript · Vite · Tailwind · Zustand · FastAPI · Python</code>
+            </div>
+
+            <div class="project">
+                <h3><a href="https://tu-liceo.free.nf/?i=1">tu-liceo</a></h3>
+                <p>Propuesta prototipo para un posible cliente. Cliente solicita modernizar el sitio web del colegio.</p>
+                <code>WordPress</code>
+            </div>
+        </section>
+
+        <section>
+            <h2>-- Experiencia --</h2>
+            <div class="job">
+                <strong>EcoAlliance SpA</strong> — Práctica Profesional (Abr–Jul 2025)
+                <p><strong>Backend & Machine Learning:</strong> Fine-tuning de modelo GPT (pipeline completo: anotación, EDA, dataset creation) para clasificación de documentos financieros. Arquitectura híbrida con few-shot learning para cobertura extendida. Integración en backend.</p>
+                <p><strong>Frontend Mobile:</strong> Desarrollo iterativo de componentes Angular/Ionic. Testing y deployment de versión APK con Capacitor.</p>
+            </div>
+        </section>
+
+        <footer>
+            La Calera, Chile · +56 9 5778 6396
+        </footer>
+    </main>
+
+    <script>
+        const canvas = document.getElementById('bg');
+        const ctx = canvas.getContext('2d');
+        let w, h, nodes = [];
+
+        function resize() {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+        }
+
+        function init() {
+            resize();
+            nodes = [];
+            const count = Math.floor((w * h) / 25000);
+            for (let i = 0; i < count; i++) {
+                nodes.push({
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    vx: (Math.random() - 0.5) * 0.3,
+                    vy: (Math.random() - 0.5) * 0.3
+                });
+            }
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, w, h);
+            
+            // Mover nodos
+            nodes.forEach(n => {
+                n.x += n.vx;
+                n.y += n.vy;
+                if (n.x < 0 || n.x > w) n.vx *= -1;
+                if (n.y < 0 || n.y > h) n.vy *= -1;
+            });
+
+            // Dibujar conexiones
+            ctx.strokeStyle = 'rgba(41, 145, 88, 0.25)';
+            ctx.lineWidth = 1;
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const dx = nodes[i].x - nodes[j].x;
+                    const dy = nodes[i].y - nodes[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 150) {
+                        ctx.beginPath();
+                        ctx.moveTo(nodes[i].x, nodes[i].y);
+                        ctx.lineTo(nodes[j].x, nodes[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            // Dibujar nodos
+            ctx.fillStyle = 'rgba(0, 102, 204, 0.15)';
+            nodes.forEach(n => {
+                ctx.beginPath();
+                ctx.arc(n.x, n.y, 2, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            requestAnimationFrame(draw);
+        }
+
+        window.addEventListener('resize', init);
+        init();
+        draw();
+    </script>
+</body>
+</html>
